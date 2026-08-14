@@ -1,6 +1,12 @@
 import db from "#db/client";
 import { createUser } from "#db/queries/users";
-import { createProperty } from "#db/queries/properties";
+import {
+  createProperty,
+  getPropertiesByUser,
+  getPropertyById,
+  updateProperty,
+  deleteProperty,
+} from "#db/queries/properties";
 
 await db.connect();
 await seed();
@@ -80,6 +86,16 @@ async function seed() {
     trash_paid_by: "Landlord",
     notes: "Long-term rental property.",
   });
+
+  const properties = await getPropertiesByUser(user.id);
+
+  console.log("All Properties:");
+  console.log(properties);
+
+  const firstProperty = await getPropertyById(properties[0].id);
+
+  console.log("Single Property:");
+  console.log(firstProperty);
 
   console.log("🌱 Database seeded.");
 }
