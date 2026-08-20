@@ -1,6 +1,7 @@
 import db from "#db/client";
 import { createUser } from "#db/queries/users";
 import { createProperty } from "#db/queries/properties";
+import { createIncome } from "#db/queries/income";
 
 await db.connect();
 await seed();
@@ -11,7 +12,7 @@ async function seed() {
   const user = await createUser("chase", "password123");
 
   // Seed properties
-  await createProperty({
+  const mapleDuplex = await createProperty({
     user_id: user.id,
     nickname: "Maple Duplex",
     street: "123 Maple Ave",
@@ -35,7 +36,7 @@ async function seed() {
     notes: "Recently renovated duplex.",
   });
 
-  await createProperty({
+  const downtownCondo = await createProperty({
     user_id: user.id,
     nickname: "Downtown Condo",
     street: "450 Market St",
@@ -59,7 +60,7 @@ async function seed() {
     notes: "Modern downtown condo.",
   });
 
-  await createProperty({
+  const pineStreetRental = await createProperty({
     user_id: user.id,
     nickname: "Pine Street Rental",
     street: "789 Pine St",
@@ -81,6 +82,31 @@ async function seed() {
     gas_paid_by: "Tenant",
     trash_paid_by: "Landlord",
     notes: "Long-term rental property.",
+  });
+
+  // Seed income
+  await createIncome({
+    property_id: mapleDuplex.id,
+    amount: 2850,
+    category: "Rent",
+    payment_date: "2026-08-01",
+    note: "August rent",
+  });
+
+  await createIncome({
+    property_id: downtownCondo.id,
+    amount: 3100,
+    category: "Rent",
+    payment_date: "2026-08-01",
+    note: "August rent",
+  });
+
+  await createIncome({
+    property_id: pineStreetRental.id,
+    amount: 2450,
+    category: "Rent",
+    payment_date: "2026-08-01",
+    note: "August rent",
   });
 
   console.log("🌱 Database seeded.");
