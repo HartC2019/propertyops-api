@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS income;
 DROP TABLE IF EXISTS properties;
 DROP TABLE IF EXISTS users;
 
@@ -36,4 +37,13 @@ CREATE TABLE properties (
     trash_paid_by TEXT,
     notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE income (
+  id SERIAL PRIMARY KEY,
+  property_id INTEGER NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
+  amount DECIMAL NOT NULL,
+  category TEXT,
+  payment_date DATE NOT NULL,
+  note TEXT
 );

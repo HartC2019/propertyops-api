@@ -8,6 +8,7 @@ import handlePostgresErrors from "#middleware/handlePostgresErrors";
 import cors from "cors";
 import morgan from "morgan";
 import propertiesRouter from "#api/properties";
+import incomeRouter from "#api/income";
 
 app.use(cors({ origin: process.env.CORS_ORIGIN ?? /localhost/ }));
 
@@ -23,6 +24,8 @@ app.get("/", (req, res) => res.send("Hello, World!"));
 app.use("/users", usersRouter);
 
 app.use("/properties", propertiesRouter);
+
+app.use("/income", incomeRouter);
 
 app.use(handlePostgresErrors);
 app.use((err, req, res, next) => {
