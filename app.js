@@ -9,6 +9,7 @@ import cors from "cors";
 import morgan from "morgan";
 import propertiesRouter from "#api/properties";
 import incomeRouter from "#api/income";
+import expensesRouter from "#api/expenses";
 
 app.use(cors({ origin: process.env.CORS_ORIGIN ?? /localhost/ }));
 
@@ -26,6 +27,8 @@ app.use("/users", usersRouter);
 app.use("/properties", propertiesRouter);
 
 app.use("/income", incomeRouter);
+
+app.use("/expenses", expensesRouter);
 
 app.use(handlePostgresErrors);
 app.use((err, req, res, next) => {

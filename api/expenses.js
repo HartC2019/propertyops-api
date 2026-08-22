@@ -1,11 +1,13 @@
 import express from "express";
+
 import requireUser from "#middleware/requireUser";
+
 import {
-  createIncome,
-  getIncomeByProperty,
-  getIncomeById,
-  deleteIncome,
-} from "#db/queries/income";
+  createExpense,
+  getExpensesByProperty,
+  getExpenseById,
+  deleteExpense,
+} from "#db/queries/expenses";
 
 import { getPropertyById } from "#db/queries/properties";
 
@@ -25,9 +27,9 @@ router.post("/", async (req, res, next) => {
       return res.status(403).send("Forbidden.");
     }
 
-    const income = await createIncome(req.body);
+    const expense = await createExpense(req.body);
 
-    res.status(201).send(income);
+    res.status(201).send(expense);
   } catch (err) {
     next(err);
   }
@@ -35,8 +37,6 @@ router.post("/", async (req, res, next) => {
 
 router.get("/", async (req, res, next) => {
   try {
-    console.log("QUERY:", req.query);
-
     const propertyId = req.query.property_id;
 
     if (!propertyId) {
@@ -53,23 +53,23 @@ router.get("/", async (req, res, next) => {
       return res.status(403).send("Forbidden.");
     }
 
-    const income = await getIncomeByProperty(propertyId);
+    const expenses = await getExpensesByProperty(propertyId);
 
-    res.send(income);
+    res.send(expenses);
   } catch (err) {
     next(err);
   }
 });
 
-router.get("/:incomeId", async (req, res, next) => {
+router.get("/:expenseId", async (req, res, next) => {
   try {
-    const income = await getIncomeById(req.params.incomeId);
+    const expense = await getExpenseById(req.params.expenseId);
 
-    if (!income) {
-      return res.status(404).send("Income not found.");
+    if (!expense) {
+      return res.status(404).send("Expense not found.");
     }
 
-    const property = await getPropertyById(income.property_id);
+    const property = await getPropertyById(expense.property_id);
 
     if (!property) {
       return res.status(404).send("Property not found.");
@@ -79,21 +79,21 @@ router.get("/:incomeId", async (req, res, next) => {
       return res.status(403).send("Forbidden.");
     }
 
-    res.send(income);
+    res.send(expense);
   } catch (err) {
     next(err);
   }
 });
 
-router.delete("/:incomeId", async (req, res, next) => {
+router.delete("/:expenseId", async (req, res, next) => {
   try {
-    const income = await getIncomeById(req.params.incomeId);
+    const expense = await getExpenseById(req.params.expenseId);
 
-    if (!income) {
-      return res.status(404).send("Income not found.");
+    if (!expense) {
+      return res.status(404).send("Expense not found.");
     }
 
-    const property = await getPropertyById(income.property_id);
+    const property = await getPropertyById(expense.property_id);
 
     if (!property) {
       return res.status(404).send("Property not found.");
@@ -103,9 +103,9 @@ router.delete("/:incomeId", async (req, res, next) => {
       return res.status(403).send("Forbidden.");
     }
 
-    const deletedIncome = await deleteIncome(req.params.incomeId);
+    const deletedExpense = await deleteExpense(req.params.expenseId);
 
-    res.send(deletedIncome);
+    res.send(deletedExpense);
   } catch (err) {
     next(err);
   }
