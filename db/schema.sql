@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS expense;
 DROP TABLE IF EXISTS income;
 DROP TABLE IF EXISTS properties;
 DROP TABLE IF EXISTS users;
@@ -45,5 +46,14 @@ CREATE TABLE income (
   amount DECIMAL NOT NULL,
   category TEXT,
   payment_date DATE NOT NULL,
+  note TEXT
+);
+
+CREATE TABLE expense (
+  id SERIAL PRIMARY KEY,
+  property_id INTEGER NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
+  amount DECIMAL NOT NULL,
+  category TEXT,
+  expense_date DATE NOT NULL,
   note TEXT
 );

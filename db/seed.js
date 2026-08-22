@@ -109,5 +109,15 @@ async function seed() {
     note: "August rent",
   });
 
+  await db.query(`
+  INSERT INTO expense
+    (property_id, amount, category, expense_date, note)
+  VALUES
+    (1, 125.00, 'Maintenance', '2026-08-05', 'Plumbing repair'),
+    (1, 85.50, 'Utility', '2026-08-10', 'Water bill'),
+    (1, 450.00, 'Tax', '2026-08-15', 'Property tax payment'),
+    (1, 200.00, 'Enhancement', '2026-08-18', 'New light fixtures');
+`);
+
   console.log("🌱 Database seeded.");
 }
