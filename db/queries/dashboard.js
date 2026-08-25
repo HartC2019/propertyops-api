@@ -30,6 +30,27 @@ export async function getDashboardSummary(userId) {
       ) AS "monthlyExpenses";
   `;
 
+  const recentPropertiesSql = `
+  SELECT
+    id,
+    nickname,
+    street,
+    city,
+    state,
+    zip_code,
+    cover_image_url,
+    property_type,
+    monthly_rent
+  FROM properties
+  WHERE user_id = $1
+  ORDER BY created_at DESC
+  LIMIT 6;
+`;
+
+  const { rows: recentProperties } = await db.query(recentPropertiesSql, [
+    userId,
+  ]);
+
   const {
     rows: [summary],
   } = await db.query(sql, [userId]);
@@ -40,5 +61,6 @@ export async function getDashboardSummary(userId) {
     monthlyExpenses: Number(summary.monthlyExpenses),
     monthlyNetIncome:
       Number(summary.monthlyIncome) - Number(summary.monthlyExpenses),
+    recentProperties,
   };
 }
