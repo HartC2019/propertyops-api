@@ -198,3 +198,26 @@ export async function deleteProperty(propertyId) {
   } = await db.query(sql, [propertyId]);
   return deletedProperty;
 }
+
+export async function getRecentProperties(userId, limit = 6) {
+  const sql = `
+    SELECT
+      id,
+      nickname,
+      street,
+      city,
+      state,
+      zip_code,
+      cover_image_url,
+      property_type,
+      monthly_rent
+    FROM properties
+    WHERE user_id = $1
+    ORDER BY created_at DESC
+    LIMIT $2;
+  `;
+
+  const { rows } = await db.query(sql, [userId, limit]);
+
+  return rows;
+}
